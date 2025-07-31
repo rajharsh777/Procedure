@@ -380,25 +380,7 @@ function showOnly(pageId) {
   for(const el of document.querySelectorAll('.page')) el.classList.remove('active');
   document.getElementById(pageId).classList.add('active');
 }
-// -- Countdown Timer --
-function updateCountdown() {
-  const target = new Date("2026-05-03T00:00:00");
-  const now = new Date();
-  let diff = target - now;
-  if(diff<0) diff = 0;
-  const d = Math.floor(diff/(1000*60*60*24));
-  const h = Math.floor((diff/(1000*60*60))%24);
-  const m = Math.floor((diff/(1000*60))%60);
-  const s = Math.floor((diff/1000)%60);
-  document.getElementById("countdown").innerHTML =
-    `Countdown to 3 May 2026: 
-      <span class="countdown-number">${d}</span>d 
-      <span class="countdown-number">${h}</span>h 
-      <span class="countdown-number">${m}</span>m 
-      <span class="countdown-number">${s}</span>s`;
-}
-setInterval(updateCountdown,1000);
-updateCountdown();
+
 // -- Data --
 const subjects = [
   {
