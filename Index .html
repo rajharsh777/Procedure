@@ -136,13 +136,7 @@ body {
   margin-top:12px; color:#fff200; font-weight:bold; text-align:center; text-shadow:0 0 6px #ff1744;
   font-family:'Orbitron',sans-serif;
 }
-  background:linear-gradient(90deg,#fff200,#ff00cc 90%);
-  color:#212F3C;
-  padding:6px 10px; border-radius:8px;
-  font-size:1.19em; box-shadow:0 0 12px #fff20088;
-  font-family:'Orbitron',sans-serif;
-  animation:countNum 0.9s;
-}
+
 @keyframes countNum {0%{transform:scale(1.3);}100%{transform:scale(1);}}
 .section-container { width:96vw; max-width:700px; margin:0 auto;}
 .thumb-top {text-align:center; margin-top:18px;}
@@ -272,34 +266,6 @@ body {
   .video-controls-bar{flex-direction:column;gap:8px;}
   .login-container {width:90vw;}
 }
-/* === AUDIO PLAYER STYLES === */
-.audio-player-wrap {
-  display: flex; align-items: center; margin: 20px 0; gap: 20px;
-  background: rgba(0,234,255,0.09); border-radius: 14px; padding: 15px 12px;
-  box-shadow: 0 0 8px #00eaff44;
-  flex-wrap: wrap;
-}
-.audio-logo {
-  width: 54px; height: 54px; border-radius: 50%; object-fit: cover;
-  margin-right: 10px; box-shadow: 0 0 12px #00eaff99;
-  border: 3px solid #ff00cc;
-}
-.audio-story-name {
-  font-family: 'Orbitron',sans-serif; font-size: 1.13em; font-weight: bold;
-  color: #ff00cc; margin-right: 20px; letter-spacing: 1px;
-  text-shadow: 0 0 8px #fff20099;
-}
-.audio-player {
-  display: flex; align-items: center; gap: 10px;
-}
-.audio-thumb {
-  width: 64px; height: 64px; border-radius: 13px; object-fit: cover;
-  margin-right: 6px; box-shadow: 0 0 10px #fff20077;
-  border: 2.2px solid #00eaff;
-}
-.audio-player audio {
-  width: 160px; min-width: 120px; background: #fff; border-radius: 8px;
-}
 </style>
 </head>
 <body>
@@ -331,7 +297,7 @@ body {
     <div class="main-title" style="margin-top:10px;">Join Our <span style="color:#ff00cc">Telegram Channel!</span></div>
     <button class="neon-btn" onclick="window.open('https://t.me/+ID-UKGD3ke9iN2Mx','_blank')">JOIN NOW</button>
     <button class="neon-btn" onclick="window.open('https://t.me/SHIZUKAxEAGLE_BOT','_blank')">CONTACT ADMIN</button>
-    <button class="neon-btn" onclick="goPage('page3')">GO TO PODCASTS</button>
+    <button class="neon-btn" onclick="goPage('page3')">GO TO SUBJECTS</button>
   </div>
 </div>
 <!-- Subjects Page -->
@@ -341,7 +307,7 @@ body {
   <div class="section-container">
     <div class="thumb-top"><img src="https://i.ibb.co/0vzvSTW/Img2url-bot.jpg" alt="Thumbnail"></div>
     <div class="countdown" id="countdown"></div>
-    <div class="main-title">PODCASTS</div>
+    <div class="main-title">SUBJECTS</div>
     <div class="folder-list" id="subjectFolders"></div>
   </div>
 </div>
@@ -414,251 +380,99 @@ function showOnly(pageId) {
   for(const el of document.querySelectorAll('.page')) el.classList.remove('active');
   document.getElementById(pageId).classList.add('active');
 }
-
+// -- Countdown Timer --
+function updateCountdown() {
+  const target = new Date("2026-05-03T00:00:00");
+  const now = new Date();
+  let diff = target - now;
+  if(diff<0) diff = 0;
+  const d = Math.floor(diff/(1000*60*60*24));
+  const h = Math.floor((diff/(1000*60*60))%24);
+  const m = Math.floor((diff/(1000*60))%60);
+  const s = Math.floor((diff/1000)%60);
+  document.getElementById("countdown").innerHTML =
+    `Countdown to 3 May 2026: 
+      <span class="countdown-number">${d}</span>d 
+      <span class="countdown-number">${h}</span>h 
+      <span class="countdown-number">${m}</span>m 
+      <span class="countdown-number">${s}</span>s`;
+}
+setInterval(updateCountdown,1000);
+updateCountdown();
 // -- Data --
 const subjects = [
-  {name:"VAMPIRE", videos: [],
-  pdfs: [], 
-  audios: [
-    {
-      name: "DANNY",
-      mp3: "https://stream.asmultiverse.com/dl/688a9854fe074b14fda095dc",
-      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
-      thumbnail: "https://i.ibb.co/qL4btzjR/Img2url-bot.jpg"
-    },
-    {
-      name: "DCOSTA",
-      mp3: "https://stream.asmultiverse.com/dl/688a9a72fe074b14fda095de",
-      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
-      thumbnail: "https://i.ibb.co/QvRyt82L/Img2url-bot.jpg"
-    },
-    {
-      name: "RUDRA",
-      mp3: "https://stream.asmultiverse.com/dl/688a9aeafe074b14fda095df",
-      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
-      thumbnail: "https://i.ibb.co/Fk9yGbmy/Img2url-bot.jpg"
-    },
-    {
-      name: "MOON LIGHT ROMANCE",
-      mp3: "https://stream.asmultiverse.com/dl/688a9b64fe074b14fda095e0",
-      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
-      thumbnail: "https://i.ibb.co/F48X4mwV/Img2url-bot.jpg"
-    },
-{
-      name: "BLOOD ROMANCE PART 1",
-      mp3: "https://stream.asmultiverse.com/dl/688a9c0bfe074b14fda095e1",
-      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
-      thumbnail: "https://i.ibb.co/8qG0r1D/Img2url-bot.jpg"
+  {
+    name: "VAMPIRE",
+    videos: [
+      { label: "DANNY", qualities: { "720P": "https://stream.asmultiverse.com/dl/688a9854fe074b14fda095dc" }, thumbnail: "https://i.ibb.co/qL4btzjR/Img2url-bot.jpg" },
+      { label: "DCOSTA", qualities: { "720P": "https://stream.asmultiverse.com/dl/688a9a72fe074b14fda095de" }, thumbnail: "https://i.ibb.co/QvRyt82L/Img2url-bot.jpg" },
+      { label: "RUDRA", qualities: { "720P": "https://stream.asmultiverse.com/dl/688a9aeafe074b14fda095df" }, thumbnail: "https://i.ibb.co/Fk9yGbmy/Img2url-bot.jpg" },
+      { label: "MOON LIGHT ROMANCE", qualities: { "720P": "https://stream.asmultiverse.com/dl/688a9b64fe074b14fda095e0" }, thumbnail: "https://i.ibb.co/F48X4mwV/Img2url-bot.jpg" },
+      { label: "BLOOD ROMANCE PART 1", qualities: { "720P": "https://stream.asmultiverse.com/dl/688a9c0bfe074b14fda095e1" }, thumbnail: "https://i.ibb.co/8qG0r1D/Img2url-bot.jpg" },
+      { label: "BLOOD ROMANCE PART 2", qualities: { "720P": "https://stream.asmultiverse.com/dl/688a9c59fe074b14fda095e2" }, thumbnail: "https://i.ibb.co/8qG0r1D/Img2url-bot.jpg" },
+      { label: "RED RIVER INN", qualities: { "720P": "https://stream.asmultiverse.com/dl/688a9cc4fe074b14fda095e3" }, thumbnail: "https://i.ibb.co/rGz5sBNm/Img2url-bot.jpg" }
+    ],
+    pdfs: []
   },
   {
-      name: "BLOOD ROMANCE PART 2",
-      mp3: "https://stream.asmultiverse.com/dl/688a9c59fe074b14fda095e2",
-      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
-      thumbnail: "https://i.ibb.co/8qG0r1D/Img2url-bot.jpg"
+    name: "HISTORY & MYTHOLOGY",
+    videos: [
+      { label: "CHANAKYA", qualities: { "720P": "https://stream.asmultiverse.com/dl/688a9f16fe074b14fda095eb" }, thumbnail: "https://i.ibb.co/9mSqxFFN/Img2url-bot.jpg" },
+      { label: "UNTOLD MAHABHARATA", qualities: { "720P": "https://stream.asmultiverse.com/dl/688a9f10fe074b14fda095e6" }, thumbnail: "https://i.ibb.co/mCvmyBwB/Img2url-bot.jpg" },
+      { label: "NETAJI", qualities: { "720P": "https://stream.asmultiverse.com/dl/688a9f10fe074b14fda095ea" }, thumbnail: "https://i.ibb.co/5XMtzD21/Img2url-bot.jpg" },
+      { label: "UNTOLD RAMAYANA", qualities: { "720P": "https://stream.asmultiverse.com/dl/688a9f10fe074b14fda095e5" }, thumbnail: "https://i.ibb.co/7NSxZgXm/Img2url-bot.jpg" },
+      { label: "MAHABHARATA", qualities: { "720P": "https://stream.asmultiverse.com/dl/688a9f10fe074b14fda095e8" }, thumbnail: "https://i.ibb.co/mCvmyBwB/Img2url-bot.jpg" },
+      { label: "BHAGVAT GEETA EXPLAINED", qualities: { "720P": "https://stream.asmultiverse.com/dl/688a9f10fe074b14fda095e9" }, thumbnail: "https://i.ibb.co/DDrPcj9L/Img2url-bot.jpg" },
+      { label: "ALEXANDER & PORUS", qualities: { "720P": "https://stream.asmultiverse.com/dl/688a9f10fe074b14fda095e7" }, thumbnail: "https://i.ibb.co/7NSxZgXm/Img2url-bot.jpg" }
+    ],
+    pdfs: []
   },
   {
-      name: "RED RIVER INN",
-      mp3: "https://stream.asmultiverse.com/dl/688a9cc4fe074b14fda095e3",
-      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
-      thumbnail: "https://i.ibb.co/rGz5sBNm/Img2url-bot.jpg"
+    name: "TEEN LOVES",
+    videos: [
+      { label: "METRO FREINDS", qualities: { "720P": "https://stream.asmultiverse.com/dl/688aaa29fe074b14fda095f7" }, thumbnail: "https://i.ibb.co/xSJRPQJP/Img2url-bot.jpg" },
+      { label: "LOVE GAME", qualities: { "720P": "https://stream.asmultiverse.com/dl/688aaa29fe074b14fda095f6" }, thumbnail: "https://i.ibb.co/sdjnKWFb/Img2url-bot.jpg" },
+      { label: "LISTEN PLEASE", qualities: { "720P": "https://stream.asmultiverse.com/dl/688aaa2afe074b14fda095f8" }, thumbnail: "https://i.ibb.co/F482DzZW/Img2url-bot.jpg" },
+      { label: "CONFESSION", qualities: { "720P": "https://stream.asmultiverse.com/dl/688aaa2afe074b14fda095f9" }, thumbnail: "https://i.ibb.co/JjVbDTC8/Img2url-bot.jpg" },
+      { label: "REPLY PLEASE", qualities: { "720P": "https://stream.asmultiverse.com/dl/688aaa29fe074b14fda095f5" }, thumbnail: "https://i.ibb.co/qLX6NT7G/Img2url-bot.jpg" },
+      { label: "MARRY ME", qualities: { "720P": "https://stream.asmultiverse.com/dl/688aaa30fe074b14fda095fa" }, thumbnail: "https://i.ibb.co/39f3T9Nk/Img2url-bot.jpg" },
+      { label: "FINDING LOVE", qualities: { "720P": "https://stream.asmultiverse.com/dl/688aaa30fe074b14fda095fb" }, thumbnail: "https://i.ibb.co/1GGD522b/Img2url-bot.jpg" }
+    ],
+    pdfs: []
+  },
+  {
+    name: "SCIENCE FICTION",
+    videos: [
+      { label: "MARS", qualities: { "720P": "https://stream.asmultiverse.com/dl/688aaef2fe074b14fda09602" }, thumbnail: "https://i.ibb.co/yBcnBRW6/Img2url-bot.jpg" },
+      { label: "ALIENS", qualities: { "720P": "https://stream.asmultiverse.com/dl/688aaef2fe074b14fda09600" }, thumbnail: "https://i.ibb.co/GQ7k2Ysm/Img2url-bot.jpg" },
+      { label: "ROBOT ROMEO", qualities: { "720P": "https://stream.asmultiverse.com/dl/688aaef2fe074b14fda09601" }, thumbnail: "https://i.ibb.co/fVwd1cZ9/Img2url-bot.jpg" },
+      { label: "SHADOW WORLD", qualities: { "720P": "https://stream.asmultiverse.com/dl/688aaef2fe074b14fda09603" }, thumbnail: "https://i.ibb.co/pvLzR8wR/Img2url-bot.jpg" },
+      { label: "MOON LANDING", qualities: { "720P": "https://stream.asmultiverse.com/dl/688aaef2fe074b14fda09604" }, thumbnail: "https://i.ibb.co/CsQYKvnV/Img2url-bot.jpg" }
+    ],
+    pdfs: []
+  },
+  {
+    name: "MYSTERY & THRILLER",
+    videos: [
+      { label: "KIDNAPPED", qualities: { "720P": "https://stream.asmultiverse.com/dl/688ab497fe074b14fda0960e" }, thumbnail: "https://i.ibb.co/KccxS5pt/Img2url-bot.jpg" },
+      { label: "WORST FREIND", qualities: { "720P": "https://stream.asmultiverse.com/dl/688ab497fe074b14fda0960b" }, thumbnail: "https://i.ibb.co/xtCL3m0t/Img2url-bot.jpg" },
+      { label: "UDU", qualities: { "720P": "https://stream.asmultiverse.com/dl/688ab497fe074b14fda0960c" }, thumbnail: "https://i.ibb.co/7tPSmXvW/Img2url-bot.jpg" },
+      { label: "UDU THE DESIRE", qualities: { "720P": "https://stream.asmultiverse.com/dl/688ab49efe074b14fda0960f" }, thumbnail: "https://i.ibb.co/SwC39Vw0/Img2url-bot.jpg" },
+      { label: "UNDER 18", qualities: { "720P": "https://stream.asmultiverse.com/dl/688ab49efe074b14fda09611" }, thumbnail: "https://i.ibb.co/ZzTwmC7s/Img2url-bot.jpg" },
+      { label: "DEAD BY 10 PM", qualities: { "720P": "https://stream.asmultiverse.com/dl/688ab497fe074b14fda0960a" }, thumbnail: "https://i.ibb.co/23GYhmgR/Img2url-bot.jpg" },
+      { label: "MURDER RECEPIE", qualities: { "720P": "https://stream.asmultiverse.com/dl/688ab497fe074b14fda0960d" }, thumbnail: "https://i.ibb.co/dwpfRDYf/Img2url-bot.jpg" },
+      { label: "KILLER CROCKS", qualities: { "720P": "https://stream.asmultiverse.com/dl/688ab49efe074b14fda09610" }, thumbnail: "https://i.ibb.co/yF9CW3Vz/Img2url-bot.jpg" },
+      { label: "NIGHT SHIFT", qualities: { "720P": "https://stream.asmultiverse.com/dl/688ab49efe074b14fda09613" }, thumbnail: "https://i.ibb.co/39JJQpMB/Img2url-bot.jpg" },
+      { label: "TARA", qualities: { "720P": "https://stream.asmultiverse.com/dl/688ab49efe074b14fda09612" }, thumbnail: "https://i.ibb.co/Kjnt7Kvs/Img2url-bot.jpg" },
+      { label: "I CAN HEAR YOU", qualities: { "720P": "https://stream.asmultiverse.com/dl/688ab4a9fe074b14fda09615" }, thumbnail: "https://i.ibb.co/wNNjRnGY/Img2url-bot.jpg" },
+      { label: "The GOOD EMPLOYEES", qualities: { "720P": "https://stream.asmultiverse.com/dl/688ab4a9fe074b14fda09614" }, thumbnail: "https://i.ibb.co/46xR8CN/Img2url-bot.jpg" },
+      { label: "MUKHERJEE MANSION", qualities: { "720P": "https://stream.asmultiverse.com/dl/688ab4a9fe074b14fda09616" }, thumbnail: "https://i.ibb.co/9HxbVmCK/Img2url-bot.jpg" },
+      { label: "UNKNOWN STATION", qualities: { "720P": "https://stream.asmultiverse.com/dl/688ab4a9fe074b14fda09617" }, thumbnail: "https://i.ibb.co/G4wp8ZZk/Img2url-bot.jpg" },
+      { label: "SIDDHA ISLAND", qualities: { "720P": "https://stream.asmultiverse.com/dl/688ab4a9fe074b14fda09618" }, thumbnail: "https://i.ibb.co/KcmK94Vn/Img2url-bot.jpg" }
+    ],
+    pdfs: []
   }
-  ]
-},   
- 
- {name:"HISTORY & MYTHOLOGY", videos: [],
-  pdfs: [], 
-  audios: [
-    {
-      name: "CHANAKYA",
-      mp3: "https://stream.asmultiverse.com/dl/688a9f16fe074b14fda095eb",
-      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
-      thumbnail: "https://i.ibb.co/9mSqxFFN/Img2url-bot.jpg"},
-     {
-      name: "UNTOLD MAHABHARATA",
-      mp3: "https://stream.asmultiverse.com/dl/688a9f10fe074b14fda095e6",
-      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
-      thumbnail: "https://i.ibb.co/mCvmyBwB/Img2url-bot.jpg"},
-      {
-      name: "NETAJI",
-      mp3: "https://stream.asmultiverse.com/dl/688a9f10fe074b14fda095ea",
-      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
-      thumbnail: "https://i.ibb.co/5XMtzD21/Img2url-bot.jpg"},
-      {
-      name: "UNTOLD RAMAYANA",
-      mp3: "https://stream.asmultiverse.com/dl/688a9f10fe074b14fda095e5",
-      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
-      thumbnail: "https://i.ibb.co/7NSxZgXm/Img2url-bot.jpg"},
-      {
-     name: "MAHABHARATA",
-      mp3: "https://stream.asmultiverse.com/dl/688a9f10fe074b14fda095e8",
-      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
-      thumbnail: "https://i.ibb.co/mCvmyBwB/Img2url-bot.jpg"},
-      {
-     name: "BHAGVAT GEETA EXPLAINED",
-      mp3: "https://stream.asmultiverse.com/dl/688a9f10fe074b14fda095e9",
-      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
-      thumbnail: "https://i.ibb.co/DDrPcj9L/Img2url-bot.jpg"},
-      {
-     name: "ALEXANDER & PORUS",
-      mp3: "https://stream.asmultiverse.com/dl/688a9f10fe074b14fda095e7",
-      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
-      thumbnail: "https://i.ibb.co/7NSxZgXm/Img2url-bot.jpg"
-      }
-    ]
-  },
-  {name:"TEEN LOVES", videos: [],
-  pdfs: [], 
-  audios: [
-    {
-      name: "METRO FREINDS",
-      mp3: "https://stream.asmultiverse.com/dl/688aaa29fe074b14fda095f7",
-      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
-      thumbnail: "https://i.ibb.co/xSJRPQJP/Img2url-bot.jpg"
-    },
-      {
-      name: "LOVE GAME",
-      mp3: "https://stream.asmultiverse.com/dl/688aaa29fe074b14fda095f6",
-      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
-      thumbnail: "https://i.ibb.co/sdjnKWFb/Img2url-bot.jpg"},
-      {
-      name: "LISTEN PLEASE",
-      mp3: "https://stream.asmultiverse.com/dl/688aaa2afe074b14fda095f8",
-      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
-      thumbnail: "https://i.ibb.co/F482DzZW/Img2url-bot.jpg"},
-      {
-      name: "CONFESSION",
-      mp3: "https://stream.asmultiverse.com/dl/688aaa2afe074b14fda095f9",
-      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
-      thumbnail: "https://i.ibb.co/JjVbDTC8/Img2url-bot.jpg"},
-      {
-      name: "REPLY PLEASE",
-      mp3: "https://stream.asmultiverse.com/dl/688aaa29fe074b14fda095f5",
-      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
-      thumbnail: "https://i.ibb.co/qLX6NT7G/Img2url-bot.jpg"},
- {
-      name: "MARRY ME",
-      mp3: "https://stream.asmultiverse.com/dl/688aaa30fe074b14fda095fa",
-      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
-      thumbnail: "https://i.ibb.co/39f3T9Nk/Img2url-bot.jpg"},
-      {
-      name: "FINDING LOVE",
-      mp3: "https://stream.asmultiverse.com/dl/688aaa30fe074b14fda095fb",
-      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
-      thumbnail: "https://i.ibb.co/1GGD522b/Img2url-bot.jpg"},
-      ]
-      },
-      
-      {name:"SCIENCE FICTION", videos: [],
-  pdfs: [], 
-  audios: [
-    {
-      name: "MARS",
-      mp3: "https://stream.asmultiverse.com/dl/688aaef2fe074b14fda09602",
-      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
-      thumbnail: "https://i.ibb.co/yBcnBRW6/Img2url-bot.jpg"},
-      {
-      name: "ALIENS",
-      mp3: "https://stream.asmultiverse.com/dl/688aaef2fe074b14fda09600",
-      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
-      thumbnail: "https://i.ibb.co/GQ7k2Ysm/Img2url-bot.jpg"},
-      {
-      name: "ROBOT ROMEO",
-      mp3: "https://stream.asmultiverse.com/dl/688aaef2fe074b14fda09601",
-      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
-      thumbnail: "https://i.ibb.co/fVwd1cZ9/Img2url-bot.jpg"},
-      {
-      name: "SHADOW WORLD",
-      mp3: "https://stream.asmultiverse.com/dl/688aaef2fe074b14fda09603",
-      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
-      thumbnail: "https://i.ibb.co/pvLzR8wR/Img2url-bot.jpg"},
-      {
-      name: "MOON LANDING",
-      mp3: "https://stream.asmultiverse.com/dl/688aaef2fe074b14fda09604",
-      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
-      thumbnail: "https://i.ibb.co/CsQYKvnV/Img2url-bot.jpg"},
-   ]
-   },
-   {name:"MYSTERY & THRILLER", videos: [],
-  pdfs: [], 
-  audios: [
-    {
-      name: "KIDNAPPED",
-      mp3: "https://stream.asmultiverse.com/dl/688ab497fe074b14fda0960e",
-      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
-      thumbnail: "https://i.ibb.co/KccxS5pt/Img2url-bot.jpg"},
-  {
-      name: "WORST FREIND",
-      mp3: "https://stream.asmultiverse.com/dl/688ab497fe074b14fda0960b",
-      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
-      thumbnail: "https://i.ibb.co/xtCL3m0t/Img2url-bot.jpg"}, 
-      {
-      name: "UDU",
-      mp3: "https://stream.asmultiverse.com/dl/688ab497fe074b14fda0960c",
-      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
-      thumbnail: "https://i.ibb.co/7tPSmXvW/Img2url-bot.jpg"},
-  {
-      name: "UDU THE DESIRE",
-      mp3: "https://stream.asmultiverse.com/dl/688ab49efe074b14fda0960f",
-      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
-      thumbnail: "https://i.ibb.co/SwC39Vw0/Img2url-bot.jpg"},
-      {
-      name: "UNDER 18",
-      mp3: "https://stream.asmultiverse.com/dl/688ab49efe074b14fda09611",
-      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
-      thumbnail: "https://i.ibb.co/ZzTwmC7s/Img2url-bot.jpg"},
-  {
-      name: "DEAD BY 10 PM",
-      mp3: "https://stream.asmultiverse.com/dl/688ab497fe074b14fda0960a",
-      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
-      thumbnail: "https://i.ibb.co/23GYhmgR/Img2url-bot.jpg"}, 
-      {
-      name: "MURDER RECEPIE",
-      mp3: "https://stream.asmultiverse.com/dl/688ab497fe074b14fda0960d",
-      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
-      thumbnail: "https://i.ibb.co/dwpfRDYf/Img2url-bot.jpg"},
-  {
-      name: "KILLER CROCKS",
-      mp3: "https://stream.asmultiverse.com/dl/688ab49efe074b14fda09610",
-      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
-      thumbnail: "https://i.ibb.co/yF9CW3Vz/Img2url-bot.jpg"},
-      {
-      name: "NIGHT SHIFT",
-      mp3: "https://stream.asmultiverse.com/dl/688ab49efe074b14fda09613",
-      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
-      thumbnail: "https://i.ibb.co/39JJQpMB/Img2url-bot.jpg"},
-  {
-      name: "TARA",
-      mp3: "https://stream.asmultiverse.com/dl/688ab49efe074b14fda09612",
-      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
-      thumbnail: "https://i.ibb.co/Kjnt7Kvs/Img2url-bot.jpg"},
-      {
-      name: "I CAN HEAR YOU",
-      mp3: "https://stream.asmultiverse.com/dl/688ab4a9fe074b14fda09615",
-      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
-      thumbnail: "https://i.ibb.co/wNNjRnGY/Img2url-bot.jpg"}, 
-      {
-      name: "The GOOD EMPLOYEES",
-      mp3: "https://stream.asmultiverse.com/dl/688ab4a9fe074b14fda09614",
-      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
-      thumbnail: "https://i.ibb.co/46xR8CN/Img2url-bot.jpg"},
-  {
-      name: "MUKHERJEE MANSION",
-      mp3: "https://stream.asmultiverse.com/dl/688ab4a9fe074b14fda09616",
-      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
-      thumbnail: "https://i.ibb.co/9HxbVmCK/Img2url-bot.jpg"},
-      {
-      name: "UNKNOWN STATION",
-      mp3: "https://stream.asmultiverse.com/dl/688ab4a9fe074b14fda09617",
-      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
-      thumbnail: "https://i.ibb.co/G4wp8ZZk/Img2url-bot.jpg"},
-  {
-      name: "SIDDHA ISLAND",
-      mp3: "https://stream.asmultiverse.com/dl/688ab4a9fe074b14fda09618",
-      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
-      thumbnail: "https://i.ibb.co/KcmK94Vn/Img2url-bot.jpg"},  
-      ]
-      },          
- ];   
+];
 // -- Render Subjects --
 function renderFolders() {
   const list = document.getElementById('subjectFolders');
@@ -700,22 +514,6 @@ function renderFolders() {
             <button class="pdf-link-btn" onclick="window.open('${p.url}','_blank');event.stopPropagation();">${p.label}</button>
           `).join('')
         }
-        ${subj.audios && subj.audios.length ? `
-          <div class="section-label">Audio Stories</div>
-          ${subj.audios.map(a => `
-            <div class="audio-player-wrap">
-              <img src="${a.logo}" class="audio-logo">
-              <span class="audio-story-name">${a.name}</span>
-              <div class="audio-player">
-                <img src="${a.thumbnail}" class="audio-thumb">
-                <audio controls>
-                  <source src="${a.mp3}" type="audio/mpeg">
-                  Your browser does not support the audio element.
-                </audio>
-              </div>
-            </div>
-          `).join('')}
-        ` : ''}
       </div>
     `;
     list.appendChild(folder);
