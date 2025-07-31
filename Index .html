@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Eagle YT World</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;900&family=Montserrat:wght@700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --primary: #00eaff;
+  --neon: #ff00cc;
+  --glow: #fff200;
+  --dark-bg: #191825;
+  --light-bg: #f5f5fa;
+  --neon-glow: 0 0 10px #ff00cc, 0 0 20px #00eaff, 0 0 25px #fff200;
+  --folder-gradient: linear-gradient(90deg, #00eaff 2%, #ff00cc 98%);
+  --folder-gradient-night: linear-gradient(90deg, #212F3C 2%, #4A235A 98%);
+  --text-glow: 0 0 2px #fff, 0 0 16px #ff00cc, 0 0 8px #00eaff;
+  --btn-shadow: 0 0 10px #00eaff88, 0 0 20px #ff00cc66;
+}
+body {
+  margin:0; padding:0; min-height:100vh;
+  font-family:'Montserrat', 'Segoe UI', Arial, sans-serif;
+  background: var(--light-bg);
+  transition: background 0.5s;
+}
+.night body, .night {
+  background: var(--dark-bg) !important;
+}
+.page {
+  display:none;
+  min-height:100vh;
+  width:100vw;
+  background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;
+  position:relative;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  transition:background-image 0.6s, background 0.6s;
+}
+.active { display:flex; }
+.centered { display:flex; flex-direction:column; align-items:center; justify-content:center; width:100vw; min-height:100vh; }
+.logo {
+  width:120px; height:120px;
+  border-radius:50%; box-shadow:0 4px 18px #00eaff99;
+  background:#fff; object-fit:cover; margin:0 auto 22px auto;
+  border: 5px solid var(--neon);
+  animation: logoPulse 2s infinite alternate;
+}
+@keyframes logoPulse {
+  from { box-shadow:0 0 20px #ff00cc99, 0 0 40px #00eaff88; }
+  to { box-shadow:0 0 40px #fff200aa, 0 0 80px #ff00cc88; }
+}
+.welcome-title {
+  font-family: 'Orbitron', 'Montserrat', sans-serif;
+  font-size:2.6em; color:var(--primary); font-weight:900;
+  letter-spacing:2.5px; text-align:center; margin-bottom:18px;
+  text-shadow:var(--neon-glow);
+  animation: textPop 1.8s cubic-bezier(.23,1.25,.32,1.1) 1;
+}
+@keyframes textPop {
+  0% { opacity:0; transform:scale(0.7);}
+  60% { opacity:1; transform:scale(1.09);}
+  100% {opacity:1; transform:scale(1);}
+}
+.neon-btn, .back-btn, .toggle-mode-btn {
+  font-family: 'Orbitron', 'Montserrat', sans-serif;
+  border:none; outline:none;
+  font-size:1.18em; font-weight:700; letter-spacing:1.5px;
+  padding:16px 36px; border-radius:16px;
+  color:#fff; background:var(--folder-gradient);
+  cursor:pointer; margin:14px 0 0 0;
+  box-shadow:var(--btn-shadow);
+  transition: background 0.2s, color 0.2s, box-shadow 0.3s;
+  position:relative; overflow:hidden;
+}
+.neon-btn:hover, .back-btn:hover, .toggle-mode-btn:hover {
+  background:linear-gradient(90deg,#fff200,#ff00cc 80%);
+  color:#222; box-shadow:0 0 40px #fff200, 0 0 16px #ff00cc;
+}
+.back-btn {
+  position:fixed; left:18px; top:18px;
+  padding:10px 28px; z-index:11; font-size:1.08em;
+  background:var(--folder-gradient);
+}
+.toggle-mode-btn {
+  position:fixed; right:18px; top:18px; z-index:11; background:var(--folder-gradient);
+  padding:10px 22px; font-size:1.13em;
+}
+.night .toggle-mode-btn { background:var(--folder-gradient-night); }
+.night .neon-btn, .night .back-btn { background:var(--folder-gradient-night); }
+.night .folder { background:rgba(30,34,60,0.92);}
+.night .main-title, .night .section-label, .night .countdown, .night .folder-title { color:#fff; text-shadow:0 0 6px #fff200; }
+.login-container {
+  background:rgba(35,35,55,0.95);
+  padding:35px 28px; border-radius:18px;
+  box-shadow:0 8px 40px #00eaff99;
+  animation: loginShow 1s;
+}
+@keyframes loginShow {
+  0% {opacity:0;transform:scale(0.7);}
+  70%{opacity:1;transform:scale(1.1);}
+  100%{opacity:1;transform:scale(1);}
+}
+.login-title {
+  font-family: 'Orbitron', 'Montserrat', sans-serif;
+  font-size:1.7em; font-weight:bold; color:var(--primary);
+  margin-bottom:18px; text-align:center;
+  text-shadow:var(--text-glow);
+}
+.login-input {
+  display:block; width:260px; padding:12px 14px;
+  margin:12px auto 0 auto; font-size:1.1em;
+  border-radius:10px; border:2px solid var(--primary);
+  background:rgba(255,255,255,0.9); outline: none;
+  font-weight:700; color:#222; transition:border 0.2s;
+}
+.login-input:focus {
+  border:2px solid var(--neon);
+  background:#fff;
+}
+.login-btn {
+  background:var(--folder-gradient); margin:22px auto 0 auto;
+  color:#fff;
+  padding:12px 38px;
+  font-size:1.13em;
+  font-family:'Orbitron',sans-serif;
+  font-weight:900;
+  border-radius:13px;
+  box-shadow:0 0 14px #ff00cc66,0 0 6px #fff20055;
+}
+.login-btn:hover { background:linear-gradient(90deg,#fff200,#ff00cc 80%); color:#212F3C;}
+.login-error {
+  margin-top:12px; color:#fff200; font-weight:bold; text-align:center; text-shadow:0 0 6px #ff1744;
+  font-family:'Orbitron',sans-serif;
+}
+  background:linear-gradient(90deg,#fff200,#ff00cc 90%);
+  color:#212F3C;
+  padding:6px 10px; border-radius:8px;
+  font-size:1.19em; box-shadow:0 0 12px #fff20088;
+  font-family:'Orbitron',sans-serif;
+  animation:countNum 0.9s;
+}
+@keyframes countNum {0%{transform:scale(1.3);}100%{transform:scale(1);}}
+.section-container { width:96vw; max-width:700px; margin:0 auto;}
+.thumb-top {text-align:center; margin-top:18px;}
+.thumb-top img {width:120px; height:120px; border-radius:18px; object-fit:cover; box-shadow:0 2px 14px #3949ab44;}
+.main-title {
+  font-family:'Orbitron',sans-serif; font-size:2em;
+  color:var(--primary); font-weight:900;
+  text-align:center; margin-bottom:22px; margin-top:8px;
+  letter-spacing:2px; text-shadow:var(--neon-glow);
+}
+.folder-list {display:flex; flex-direction:column; gap:22px;}
+.folder {
+  background:rgba(255,255,255,0.96);
+  border-radius:20px;
+  padding:0;
+  box-shadow:0 3px 20px #ff00cc22;
+  margin-bottom:2px;
+  border: 3.2px solid transparent;
+  background-clip: padding-box;
+  transition:box-shadow 0.18s, border 0.24s;
+  position:relative;
+  overflow:hidden;
+}
+.folder-title-row {
+  padding:24px 24px;
+  display:flex;
+  align-items:center;
+  cursor:pointer;
+  font-size:1.22em;
+  user-select:none;
+  font-family:'Orbitron',sans-serif;
+  font-weight:900;
+  color:var(--primary);
+  background: var(--folder-gradient);
+  box-shadow:0 0 16px #ff00cc44;
+  border-bottom:2px solid #fff20099;
+  transition:background 0.24s;
+}
+.folder.open .folder-title-row, .folder-title-row:hover {
+  background:linear-gradient(90deg,#fff200 10%,#ff00cc 80%);
+  color:#212F3C;
+}
+.folder-title {
+  flex:1; letter-spacing:2px; font-size:1.13em; text-shadow:var(--text-glow);
+}
+.arrow {
+  font-size:1.25em; color:#fff; margin-left:10px;
+  transition:transform 0.23s;
+  filter: drop-shadow(0 0 6px #00eaff);
+}
+.folder.open .arrow {transform:rotate(90deg);}
+.folder-content {padding:18px 26px 18px 26px;display:none;}
+.folder.open .folder-content {display:block;}
+.section-label {
+  font-size:1.12em; font-weight:800; color:var(--neon);
+  margin-bottom:7px;margin-top:18px;
+  text-shadow:0 0 12px #fff200;
+  font-family:'Orbitron',sans-serif;
+  letter-spacing:1.2px;
+}
+.video-link-btn, .pdf-link-btn, .youtube-btn {
+  background:linear-gradient(90deg,#fff200 40%,#00eaff 100%);
+  color:#222; border-radius:10px; font-size:1em; font-weight:bold;
+  padding:10px 19px; border:2px solid #00eaff; cursor:pointer;
+  transition:background 0.16s,color 0.16s,box-shadow 0.18s;
+  margin-right:7px; margin-bottom:8px; display:inline-block;
+  box-shadow:0 0 12px #fff20055;
+  font-family:'Orbitron',sans-serif;
+}
+.video-link-btn:hover {background:linear-gradient(90deg,#ff00cc,#00eaff);}
+.pdf-link-btn {border-color:#fff200;}
+.pdf-link-btn:hover {background:linear-gradient(90deg,#00eaff,#fff200);}
+.youtube-btn {
+  background:linear-gradient(90deg,#ff0000 40%,#ff9100 100%);
+  color:#fff; border-color:#ff0000; font-weight:bold;
+  margin-left:0; box-shadow:0 0 12px #ff000088;
+}
+.youtube-btn:hover {background:linear-gradient(90deg,#fff200,#ff0000);}
+.night .folder {background:rgba(30,34,60,0.98);}
+.night .folder-title-row {background:var(--folder-gradient-night);}
+.night .folder.open .folder-title-row, .night .folder-title-row:hover {background:linear-gradient(90deg,#fff200 10%,#3949ab 80%);}
+.night .video-link-btn, .night .pdf-link-btn {color:#fff;background:linear-gradient(90deg,#3949ab,#00eaff);}
+.night .video-link-btn:hover{background:linear-gradient(90deg,#fff200,#00eaff);}
+.night .pdf-link-btn:hover{background:linear-gradient(90deg,#00eaff,#fff200);}
+.night .youtube-btn{background:linear-gradient(90deg,#ff0000,#3949ab);}
+.night .youtube-btn:hover{background:linear-gradient(90deg,#fff200,#ff0000);}
+.video-modal-bg {position:fixed;top:0;left:0;width:100vw;height:100vh;background:rgba(30,44,80,0.44);display:none;align-items:center;justify-content:center;z-index:200;}
+.video-modal {
+  background:rgba(15,17,30,0.98);
+  border-radius:22px;
+  padding:18px 18px 12px 18px;
+  box-shadow:0 8px 38px #00eaff99;
+  max-width:98vw;
+  border: 2.5px solid #fff200;
+}
+.video-modal video {max-width:75vw;max-height:60vh;border-radius:14px;background:#222;box-shadow:0 0 12px #00eaff;}
+.eagle-splash {
+  position:absolute;left:0;top:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;z-index:30;
+  font-family:'Orbitron',sans-serif;
+  font-size:4.6vw;min-font-size:2.2em;max-font-size:4.5em;
+  font-weight:900; letter-spacing:0.2em; text-shadow:0 0 30px #fff200, 0 0 40px #ff00cc,0 0 12px #00eaff;
+  background:rgba(255,255,255,0.08);
+  animation: eagleSplashAnim 1s alternate infinite, eagleColors 5s linear infinite;
+}
+@keyframes eagleSplashAnim {0% {transform:scale(1);}100% {transform:scale(1.12);}}
+@keyframes eagleColors {
+  0%{color:#ff00cc;}
+  12%{color:#fff200;}
+  22%{color:#00eaff;}
+  32%{color:#ff00cc;}
+  45%{color:#fff;}
+  65%{color:#00eaff;}
+  85%{color:#ff00cc;}
+  100%{color:#fff200;}
+}
+.blinking {animation: blink 0.7s steps(1) infinite;}
+@keyframes blink {0%,100%{opacity:1;}50%{opacity:0.2;}}
+.video-controls-bar{display:flex;align-items:center;justify-content:space-between;gap:14px;margin:12px 0 0 0;flex-wrap:wrap;}
+.ctrl-label {font-weight:bold;color:#fff200;}
+.ctrl-select, .ctrl-btn {padding:6px 13px;border-radius:9px;border:1.5px solid #fff200;margin-left:7px;font-size:1.09em;}
+.ctrl-btn {background:linear-gradient(90deg,#fff200,#ff00cc);color:#222;font-weight:bold;cursor:pointer;}
+.ctrl-btn:hover {background:linear-gradient(90deg,#00eaff,#fff200);}
+@media (max-width:700px) {
+  .section-container{max-width:99vw;}
+  .video-modal video {max-width:97vw;}
+  .video-modal {padding:8px;}
+  .video-controls-bar{flex-direction:column;gap:8px;}
+  .login-container {width:90vw;}
+}
+/* === AUDIO PLAYER STYLES === */
+.audio-player-wrap {
+  display: flex; align-items: center; margin: 20px 0; gap: 20px;
+  background: rgba(0,234,255,0.09); border-radius: 14px; padding: 15px 12px;
+  box-shadow: 0 0 8px #00eaff44;
+  flex-wrap: wrap;
+}
+.audio-logo {
+  width: 54px; height: 54px; border-radius: 50%; object-fit: cover;
+  margin-right: 10px; box-shadow: 0 0 12px #00eaff99;
+  border: 3px solid #ff00cc;
+}
+.audio-story-name {
+  font-family: 'Orbitron',sans-serif; font-size: 1.13em; font-weight: bold;
+  color: #ff00cc; margin-right: 20px; letter-spacing: 1px;
+  text-shadow: 0 0 8px #fff20099;
+}
+.audio-player {
+  display: flex; align-items: center; gap: 10px;
+}
+.audio-thumb {
+  width: 64px; height: 64px; border-radius: 13px; object-fit: cover;
+  margin-right: 6px; box-shadow: 0 0 10px #fff20077;
+  border: 2.2px solid #00eaff;
+}
+.audio-player audio {
+  width: 160px; min-width: 120px; background: #fff; border-radius: 8px;
+}
+</style>
+</head>
+<body>
+<!-- Login Page -->
+<div id="pageLogin" class="page active" style="background-image:url('https://i.ibb.co/8VPvpMg/Img2url-bot.jpg')">
+  <div class="centered">
+    <div class="login-container">
+      <div class="login-title">🔐 Eagle Yt World</div>
+      <input class="login-input" id="loginUser" placeholder="User ID" autocomplete="username">
+      <input class="login-input" id="loginPass" type="password" placeholder="Password" autocomplete="current-password">
+      <button class="login-btn" onclick="login()">LOGIN</button>
+      <div class="login-error" id="loginError"></div>
+    </div>
+  </div>
+</div>
+<!-- Welcome Page -->
+<div id="page1" class="page" style="background-image:url('https://i.ibb.co/8VPvpMg/Img2url-bot.jpg');justify-content:center;">
+  <div>
+    <img src="https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg" alt="Logo" class="logo">
+    <div class="welcome-title">Welcome in Eagle Yt World</div>
+  </div>
+</div>
+<!-- Subscribe Page -->
+<div id="page2" class="page" style="background-image:url('https://i.ibb.co/Csz8ysvH/Img2url-bot.jpg');">
+  <button class="back-btn" onclick="goPage('page1')">⬅ BACK</button>
+  <button class="toggle-mode-btn" onclick="toggleNightMode()" id="modeBtn" title="Switch theme"><span id="modeIcon">🌙</span></button>
+  <div style="text-align:center;">
+    <img src="https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg" alt="Logo" class="logo" style="margin-bottom:0;">
+    <div class="main-title" style="margin-top:10px;">Join Our <span style="color:#ff00cc">Telegram Channel!</span></div>
+    <button class="neon-btn" onclick="window.open('https://t.me/+ID-UKGD3ke9iN2Mx','_blank')">JOIN NOW</button>
+    <button class="neon-btn" onclick="window.open('https://t.me/SHIZUKAxEAGLE_BOT','_blank')">CONTACT ADMIN</button>
+    <button class="neon-btn" onclick="goPage('page3')">GO TO PODCASTS</button>
+  </div>
+</div>
+<!-- Subjects Page -->
+<div id="page3" class="page" style="background-image:url('https://i.ibb.co/SXG18fC2/Img2url-bot.jpg');align-items:flex-start;width:100vw;">
+  <button class="back-btn" onclick="goPage('page2')">⬅ BACK</button>
+  <button class="toggle-mode-btn" onclick="toggleNightMode()" id="modeBtn3" title="Switch theme" style="right:18px;top:18px;"><span id="modeIcon3">🌙</span></button>
+  <div class="section-container">
+    <div class="thumb-top"><img src="https://i.ibb.co/0vzvSTW/Img2url-bot.jpg" alt="Thumbnail"></div>
+    <div class="countdown" id="countdown"></div>
+    <div class="main-title">PODCASTS</div>
+    <div class="folder-list" id="subjectFolders"></div>
+  </div>
+</div>
+<!-- Video Modal -->
+<div id="videoModalBg" class="video-modal-bg" onclick="closeVideo()">
+  <div class="video-modal" onclick="event.stopPropagation();">
+    <div style="position:relative;">
+      <div id="eagleSplash" class="eagle-splash blinking">EAGLE</div>
+      <video id="modalVideo" controls autoplay style="display:block;z-index:1;position:relative;" onplay="showSplash()" onended="closeVideo()">
+        <source id="modalVideoSrc" src="" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+    </div>
+    <div class="video-controls-bar">
+      <span>
+        <span class="ctrl-label">Speed:</span>
+        <select id="speedSel" class="ctrl-select" onchange="setVideoSpeed()">
+          <option>0.5x</option>
+          <option>1x</option>
+          <option>1.25x</option>
+          <option>1.5x</option>
+          <option>1.75x</option>
+          <option>2x</option>
+          <option>2.25x</option>
+          <option>2.5x</option>
+        </select>
+      </span>
+      <span>
+        <span class="ctrl-label">Quality:</span>
+        <select id="qualitySel" class="ctrl-select" onchange="setVideoQuality()">
+          <option>360P</option>
+          <option>480P</option>
+          <option selected>720P</option>
+        </select>
+      </span>
+      <button class="ctrl-btn" onclick="closeVideo()">Close Video</button>
+    </div>
+  </div>
+</div>
+<script>
+// -- Theme Mode --
+let night = false;
+function toggleNightMode() {
+  night = !night;
+  document.body.classList.toggle("night", night);
+  document.getElementById("modeIcon").textContent = night ? "☀️" : "🌙";
+  if(document.getElementById("modeIcon3")) document.getElementById("modeIcon3").textContent = night ? "☀️" : "🌙";
+}
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById("modeIcon").textContent = night ? "☀️" : "🌙";
+  if(document.getElementById("modeIcon3")) document.getElementById("modeIcon3").textContent = night ? "☀️" : "🌙";
+});
+// -- Login --
+function login() {
+  const user = document.getElementById('loginUser').value.trim();
+  const pass = document.getElementById('loginPass').value.trim();
+  if (user === "SHIZUKA" && pass === "EAGLE") {
+    showOnly('page1');
+    setTimeout(()=>showOnly('page2'),2000);
+  } else {
+    document.getElementById('loginError').textContent = "❗ Invalid User ID or Password";
+  }
+}
+// -- Navigation --
+function goPage(page) {
+  showOnly(page);
+  if(page==='page1') setTimeout(()=>showOnly('page2'),2000);
+}
+function showOnly(pageId) {
+  for(const el of document.querySelectorAll('.page')) el.classList.remove('active');
+  document.getElementById(pageId).classList.add('active');
+}
+
+// -- Data --
+const subjects = [
+  {name:"VAMPIRE", videos: [],
+  pdfs: [], 
+  audios: [
+    {
+      name: "DANNY",
+      mp3: "https://stream.asmultiverse.com/dl/688a9854fe074b14fda095dc",
+      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
+      thumbnail: "https://i.ibb.co/qL4btzjR/Img2url-bot.jpg"
+    },
+    {
+      name: "DCOSTA",
+      mp3: "https://stream.asmultiverse.com/dl/688a9a72fe074b14fda095de",
+      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
+      thumbnail: "https://i.ibb.co/QvRyt82L/Img2url-bot.jpg"
+    },
+    {
+      name: "RUDRA",
+      mp3: "https://stream.asmultiverse.com/dl/688a9aeafe074b14fda095df",
+      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
+      thumbnail: "https://i.ibb.co/Fk9yGbmy/Img2url-bot.jpg"
+    },
+    {
+      name: "MOON LIGHT ROMANCE",
+      mp3: "https://stream.asmultiverse.com/dl/688a9b64fe074b14fda095e0",
+      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
+      thumbnail: "https://i.ibb.co/F48X4mwV/Img2url-bot.jpg"
+    },
+{
+      name: "BLOOD ROMANCE PART 1",
+      mp3: "https://stream.asmultiverse.com/dl/688a9c0bfe074b14fda095e1",
+      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
+      thumbnail: "https://i.ibb.co/8qG0r1D/Img2url-bot.jpg"
+  },
+  {
+      name: "BLOOD ROMANCE PART 2",
+      mp3: "https://stream.asmultiverse.com/dl/688a9c59fe074b14fda095e2",
+      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
+      thumbnail: "https://i.ibb.co/8qG0r1D/Img2url-bot.jpg"
+  },
+  {
+      name: "RED RIVER INN",
+      mp3: "https://stream.asmultiverse.com/dl/688a9cc4fe074b14fda095e3",
+      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
+      thumbnail: "https://i.ibb.co/rGz5sBNm/Img2url-bot.jpg"
+  }
+  ]
+},   
+ 
+ {name:"HISTORY & MYTHOLOGY", videos: [],
+  pdfs: [], 
+  audios: [
+    {
+      name: "CHANAKYA",
+      mp3: "https://stream.asmultiverse.com/dl/688a9f16fe074b14fda095eb",
+      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
+      thumbnail: "https://i.ibb.co/9mSqxFFN/Img2url-bot.jpg"},
+     {
+      name: "UNTOLD MAHABHARATA",
+      mp3: "https://stream.asmultiverse.com/dl/688a9f10fe074b14fda095e6",
+      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
+      thumbnail: "https://i.ibb.co/mCvmyBwB/Img2url-bot.jpg"},
+      {
+      name: "NETAJI",
+      mp3: "https://stream.asmultiverse.com/dl/688a9f10fe074b14fda095ea",
+      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
+      thumbnail: "https://i.ibb.co/5XMtzD21/Img2url-bot.jpg"},
+      {
+      name: "UNTOLD RAMAYANA",
+      mp3: "https://stream.asmultiverse.com/dl/688a9f10fe074b14fda095e5",
+      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
+      thumbnail: "https://i.ibb.co/7NSxZgXm/Img2url-bot.jpg"},
+      {
+     name: "MAHABHARATA",
+      mp3: "https://stream.asmultiverse.com/dl/688a9f10fe074b14fda095e8",
+      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
+      thumbnail: "https://i.ibb.co/mCvmyBwB/Img2url-bot.jpg"},
+      {
+     name: "BHAGVAT GEETA EXPLAINED",
+      mp3: "https://stream.asmultiverse.com/dl/688a9f10fe074b14fda095e9",
+      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
+      thumbnail: "https://i.ibb.co/DDrPcj9L/Img2url-bot.jpg"},
+      {
+     name: "ALEXANDER & PORUS",
+      mp3: "https://stream.asmultiverse.com/dl/688a9f10fe074b14fda095e7",
+      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
+      thumbnail: "https://i.ibb.co/7NSxZgXm/Img2url-bot.jpg"
+      }
+    ]
+  },
+  {name:"TEEN LOVES", videos: [],
+  pdfs: [], 
+  audios: [
+    {
+      name: "METRO FREINDS",
+      mp3: "https://stream.asmultiverse.com/dl/688aaa29fe074b14fda095f7",
+      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
+      thumbnail: "https://i.ibb.co/xSJRPQJP/Img2url-bot.jpg"
+    },
+      {
+      name: "LOVE GAME",
+      mp3: "https://stream.asmultiverse.com/dl/688aaa29fe074b14fda095f6",
+      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
+      thumbnail: "https://i.ibb.co/sdjnKWFb/Img2url-bot.jpg"},
+      {
+      name: "LISTEN PLEASE",
+      mp3: "https://stream.asmultiverse.com/dl/688aaa2afe074b14fda095f8",
+      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
+      thumbnail: "https://i.ibb.co/F482DzZW/Img2url-bot.jpg"},
+      {
+      name: "CONFESSION",
+      mp3: "https://stream.asmultiverse.com/dl/688aaa2afe074b14fda095f9",
+      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
+      thumbnail: "https://i.ibb.co/JjVbDTC8/Img2url-bot.jpg"},
+      {
+      name: "REPLY PLEASE",
+      mp3: "https://stream.asmultiverse.com/dl/688aaa29fe074b14fda095f5",
+      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
+      thumbnail: "https://i.ibb.co/qLX6NT7G/Img2url-bot.jpg"},
+ {
+      name: "MARRY ME",
+      mp3: "https://stream.asmultiverse.com/dl/688aaa30fe074b14fda095fa",
+      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
+      thumbnail: "https://i.ibb.co/39f3T9Nk/Img2url-bot.jpg"},
+      {
+      name: "FINDING LOVE",
+      mp3: "https://stream.asmultiverse.com/dl/688aaa30fe074b14fda095fb",
+      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
+      thumbnail: "https://i.ibb.co/1GGD522b/Img2url-bot.jpg"},
+      ]
+      },
+      
+      {name:"SCIENCE FICTION", videos: [],
+  pdfs: [], 
+  audios: [
+    {
+      name: "MARS",
+      mp3: "https://stream.asmultiverse.com/dl/688aaef2fe074b14fda09602",
+      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
+      thumbnail: "https://i.ibb.co/yBcnBRW6/Img2url-bot.jpg"},
+      {
+      name: "ALIENS",
+      mp3: "https://stream.asmultiverse.com/dl/688aaef2fe074b14fda09600",
+      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
+      thumbnail: "https://i.ibb.co/GQ7k2Ysm/Img2url-bot.jpg"},
+      {
+      name: "ROBOT ROMEO",
+      mp3: "https://stream.asmultiverse.com/dl/688aaef2fe074b14fda09601",
+      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
+      thumbnail: "https://i.ibb.co/fVwd1cZ9/Img2url-bot.jpg"},
+      {
+      name: "SHADOW WORLD",
+      mp3: "https://stream.asmultiverse.com/dl/688aaef2fe074b14fda09603",
+      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
+      thumbnail: "https://i.ibb.co/pvLzR8wR/Img2url-bot.jpg"},
+      {
+      name: "MOON LANDING",
+      mp3: "https://stream.asmultiverse.com/dl/688aaef2fe074b14fda09604",
+      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
+      thumbnail: "https://i.ibb.co/CsQYKvnV/Img2url-bot.jpg"},
+   ]
+   },
+   {name:"MYSTERY & THRILLER", videos: [],
+  pdfs: [], 
+  audios: [
+    {
+      name: "KIDNAPPED",
+      mp3: "https://stream.asmultiverse.com/dl/688ab497fe074b14fda0960e",
+      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
+      thumbnail: "https://i.ibb.co/KccxS5pt/Img2url-bot.jpg"},
+  {
+      name: "WORST FREIND",
+      mp3: "https://stream.asmultiverse.com/dl/688ab497fe074b14fda0960b",
+      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
+      thumbnail: "https://i.ibb.co/xtCL3m0t/Img2url-bot.jpg"}, 
+      {
+      name: "UDU",
+      mp3: "https://stream.asmultiverse.com/dl/688ab497fe074b14fda0960c",
+      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
+      thumbnail: "https://i.ibb.co/7tPSmXvW/Img2url-bot.jpg"},
+  {
+      name: "UDU THE DESIRE",
+      mp3: "https://stream.asmultiverse.com/dl/688ab49efe074b14fda0960f",
+      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
+      thumbnail: "https://i.ibb.co/SwC39Vw0/Img2url-bot.jpg"},
+      {
+      name: "UNDER 18",
+      mp3: "https://stream.asmultiverse.com/dl/688ab49efe074b14fda09611",
+      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
+      thumbnail: "https://i.ibb.co/ZzTwmC7s/Img2url-bot.jpg"},
+  {
+      name: "DEAD BY 10 PM",
+      mp3: "https://stream.asmultiverse.com/dl/688ab497fe074b14fda0960a",
+      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
+      thumbnail: "https://i.ibb.co/23GYhmgR/Img2url-bot.jpg"}, 
+      {
+      name: "MURDER RECEPIE",
+      mp3: "https://stream.asmultiverse.com/dl/688ab497fe074b14fda0960d",
+      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
+      thumbnail: "https://i.ibb.co/dwpfRDYf/Img2url-bot.jpg"},
+  {
+      name: "KILLER CROCKS",
+      mp3: "https://stream.asmultiverse.com/dl/688ab49efe074b14fda09610",
+      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
+      thumbnail: "https://i.ibb.co/yF9CW3Vz/Img2url-bot.jpg"},
+      {
+      name: "NIGHT SHIFT",
+      mp3: "https://stream.asmultiverse.com/dl/688ab49efe074b14fda09613",
+      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
+      thumbnail: "https://i.ibb.co/39JJQpMB/Img2url-bot.jpg"},
+  {
+      name: "TARA",
+      mp3: "https://stream.asmultiverse.com/dl/688ab49efe074b14fda09612",
+      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
+      thumbnail: "https://i.ibb.co/Kjnt7Kvs/Img2url-bot.jpg"},
+      {
+      name: "I CAN HEAR YOU",
+      mp3: "https://stream.asmultiverse.com/dl/688ab4a9fe074b14fda09615",
+      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
+      thumbnail: "https://i.ibb.co/wNNjRnGY/Img2url-bot.jpg"}, 
+      {
+      name: "The GOOD EMPLOYEES",
+      mp3: "https://stream.asmultiverse.com/dl/688ab4a9fe074b14fda09614",
+      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
+      thumbnail: "https://i.ibb.co/46xR8CN/Img2url-bot.jpg"},
+  {
+      name: "MUKHERJEE MANSION",
+      mp3: "https://stream.asmultiverse.com/dl/688ab4a9fe074b14fda09616",
+      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
+      thumbnail: "https://i.ibb.co/9HxbVmCK/Img2url-bot.jpg"},
+      {
+      name: "UNKNOWN STATION",
+      mp3: "https://stream.asmultiverse.com/dl/688ab4a9fe074b14fda09617",
+      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
+      thumbnail: "https://i.ibb.co/G4wp8ZZk/Img2url-bot.jpg"},
+  {
+      name: "SIDDHA ISLAND",
+      mp3: "https://stream.asmultiverse.com/dl/688ab4a9fe074b14fda09618",
+      logo: "https://i.ibb.co/0RVzmP0Q/Img2url-bot.jpg",
+      thumbnail: "https://i.ibb.co/KcmK94Vn/Img2url-bot.jpg"},  
+      ]
+      },          
+ ];   
+// -- Render Subjects --
+function renderFolders() {
+  const list = document.getElementById('subjectFolders');
+  list.innerHTML = '';
+  subjects.forEach((subj, idx) => {
+    const folder = document.createElement('div');
+    folder.className = 'folder';
+    folder.innerHTML = `
+      <div class="folder-title-row" onclick="toggleFolder(${idx})">
+        <span class="folder-title">${subj.name}</span>
+        <span class="arrow">&#9654;</span>
+      </div>
+      <div class="folder-content">
+        <div class="section-label">Videos</div>
+        ${
+          subj.videos.map((v,i) => {
+            const qualities = v.qualities || {};
+            const bestUrl = qualities["720P"] || qualities["480P"] || qualities["360P"] || "";
+            let ytBtn = '';
+            if (bestUrl.includes('youtube.com') || bestUrl.includes('youtu.be')) {
+              let youtubeWatch = bestUrl;
+              if (bestUrl.includes('/embed/')) {
+                const match = bestUrl.match(/embed\/([a-zA-Z0-9_-]+)/);
+                if (match) youtubeWatch = `https://www.youtube.com/watch?v=${match[1]}`;
+              }
+              ytBtn = `<button class="youtube-btn" onclick="window.open('${youtubeWatch}','_blank');event.stopPropagation();">YouTube</button>`;
+              return `
+                <button class="video-link-btn" onclick="window.open('${youtubeWatch}','_blank');event.stopPropagation();">${v.label}</button>
+                ${ytBtn}
+              `;
+            } else {
+              return `<button class="video-link-btn" onclick="openVideoModal(${idx},${i});event.stopPropagation();">${v.label}</button>`;
+            }
+          }).join('')
+        }
+        <div class="section-label">PDF/Pages</div>
+        ${
+          subj.pdfs.map(p=>`
+            <button class="pdf-link-btn" onclick="window.open('${p.url}','_blank');event.stopPropagation();">${p.label}</button>
+          `).join('')
+        }
+        ${subj.audios && subj.audios.length ? `
+          <div class="section-label">Audio Stories</div>
+          ${subj.audios.map(a => `
+            <div class="audio-player-wrap">
+              <img src="${a.logo}" class="audio-logo">
+              <span class="audio-story-name">${a.name}</span>
+              <div class="audio-player">
+                <img src="${a.thumbnail}" class="audio-thumb">
+                <audio controls>
+                  <source src="${a.mp3}" type="audio/mpeg">
+                  Your browser does not support the audio element.
+                </audio>
+              </div>
+            </div>
+          `).join('')}
+        ` : ''}
+      </div>
+    `;
+    list.appendChild(folder);
+  });
+}
+function toggleFolder(idx) {
+  const folders = document.querySelectorAll('.folder');
+  folders.forEach((f, i) => {
+    if(i===idx) f.classList.toggle('open');
+    else f.classList.remove('open');
+  });
+}
+renderFolders();
+// -- Video Modal with EAGLE splash, Speed, Quality --
+let currentVidQualities = {};
+function openVideoModal(subjIdx, vidIdx) {
+  let vidObj = subjects[subjIdx].videos[vidIdx];
+  currentVidQualities = vidObj.qualities;
+  let defaultQ = "720P";
+  if(!currentVidQualities[defaultQ]) defaultQ = Object.keys(currentVidQualities)[0];
+  document.getElementById('qualitySel').value = defaultQ;
+  setVideoSource(currentVidQualities[defaultQ]);
+  document.getElementById('speedSel').value = "1x";
+  setVideoSpeed();
+  let bg = document.getElementById('videoModalBg');
+  let splash = document.getElementById('eagleSplash');
+  bg.style.display = 'flex';
+  splash.style.display = 'flex';
+  setTimeout(()=>{splash.style.display='none';},5000);
+}
+function setVideoSource(url) {
+  let v = document.getElementById('modalVideo');
+  let src = document.getElementById('modalVideoSrc');
+  v.pause();
+  src.src = url;
+  v.load();
+}
+function setVideoQuality() {
+  let qual = document.getElementById('qualitySel').value;
+  if(currentVidQualities[qual]) setVideoSource(currentVidQualities[qual]);
+}
+function setVideoSpeed() {
+  let spd = document.getElementById('speedSel').value.replace('x','');
+  document.getElementById('modalVideo').playbackRate = parseFloat(spd);
+}
+function showSplash() {
+  document.getElementById('eagleSplash').style.display = 'flex';
+  setTimeout(()=>{document.getElementById('eagleSplash').style.display='none';},5000);
+}
+function closeVideo() {
+  let v = document.getElementById('modalVideo');
+  v.pause();
+  document.getElementById('videoModalBg').style.display = 'none';
+  document.getElementById('eagleSplash').style.display = 'none';
+}
+</script>
+</body>
+</html>
